@@ -350,6 +350,18 @@
     </div>
   </div>
 
+  <!-- ========== CUSTOM WARNING ALERT OVERLAY ========== -->
+  <div class="modal-overlay" id="customAlertOverlay">
+    <div class="modal-dialog" style="max-width: 400px; padding: 2.5rem 2rem;">
+      <div class="icon-wrap" style="background: rgba(245, 158, 11, 0.08); color: var(--accent); margin-bottom: 1.2rem;"><i class="fas fa-exclamation-triangle"></i></div>
+      <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem;">Limit Reached</h3>
+      <p id="customAlertMessage" style="color: var(--slate-600); margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;"></p>
+      <div class="modal-buttons" style="margin-top: 1.5rem;">
+        <button class="btn-primary" id="customAlertCloseBtn" style="width: 100%; justify-content: center;">Understood</button>
+      </div>
+    </div>
+  </div>
+
   <!-- External JavaScript Logic -->
   <script src="script.js"></script>
 </body>

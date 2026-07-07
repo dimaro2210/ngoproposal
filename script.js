@@ -684,7 +684,7 @@
         checkoutSuccessView.style.display = 'block';
       } else {
         console.error("Web3Forms submission failed:", json);
-        alert("Form submission failed. Please try again or contact us directly on WhatsApp.");
+        showCustomAlert("Form submission failed. Please try again or contact us directly on WhatsApp.");
         checkoutOverlay.style.display = 'none';
       }
     })
@@ -777,7 +777,7 @@
         if (checkbox.checked) {
           if (selectedPages.size >= maxPages) {
             checkbox.checked = false;
-            alert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
+            showCustomAlert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
             return;
           }
           selectedPages.add(p.label);
@@ -824,7 +824,7 @@
       if (!val) return;
 
       if (selectedPages.size >= maxPages) {
-        alert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
+        showCustomAlert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
         return;
       }
 
@@ -845,7 +845,7 @@
         if (checkbox.checked) {
           if (selectedPages.size >= maxPages) {
             checkbox.checked = false;
-            alert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
+            showCustomAlert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
             return;
           }
           selectedPages.add(val);
@@ -879,6 +879,26 @@
     container.appendChild(customWrapper);
 
     updateHiddenInput();
+  }
+
+  function showCustomAlert(message) {
+    const alertOverlay = document.getElementById('customAlertOverlay');
+    const alertMessage = document.getElementById('customAlertMessage');
+    const alertCloseBtn = document.getElementById('customAlertCloseBtn');
+
+    if (!alertOverlay || !alertMessage || !alertCloseBtn) {
+      alert(message);
+      return;
+    }
+
+    alertMessage.textContent = message;
+    alertOverlay.style.display = 'flex';
+
+    const closeHandler = () => {
+      alertOverlay.style.display = 'none';
+      alertCloseBtn.removeEventListener('click', closeHandler);
+    };
+    alertCloseBtn.addEventListener('click', closeHandler);
   }
 
   init();

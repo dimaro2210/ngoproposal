@@ -121,8 +121,12 @@
           <input type="text" id="q6" placeholder="e.g., online donations, volunteer recruitment, public relations" required>
         </div>
         <div class="form-group">
-          <label for="q7">7. What pages would you like on your website? <span class="required-star">*</span></label>
-          <textarea id="q7" rows="3" placeholder="e.g., Home, About Us, Outreaches, Donations, Volunteer Signup, Gallery, Blog, Contact" required></textarea>
+          <label>7. What pages would you like on your website? (Based on package: <strong id="selectedPlanLabel" style="color: var(--primary);">--</strong>) <span class="required-star">*</span></label>
+          <p style="font-size: 0.85rem; color: var(--slate-500); margin-bottom: 0.8rem;" id="pageSelectionInfo">Select pages to include in your build.</p>
+          <div id="dynamicPagesContainer" class="checkbox-page-selector">
+            <!-- Populated via script.js -->
+          </div>
+          <input type="hidden" id="q7" required>
         </div>
         <div class="form-group">
           <label>11. Do you have a logo, brand colors, and content (text/images) ready? <span class="required-star">*</span></label>
@@ -218,8 +222,8 @@
           <p style="font-size: 0.9rem; color: var(--slate-500);">📧 services@dimacode.com | 🌐 dimacode.com</p>
         </div>
         <div style="text-align: right;">
-          <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.3rem; color: var(--success); font-weight: 700;">PAYMENT RECEIPT</h3>
-          <p style="font-size: 0.9rem; color: var(--slate-500);" id="receiptIdText">Receipt #: --</p>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.3rem; color: var(--primary); font-weight: 700;">PROJECT SPECIFICATION</h3>
+          <p style="font-size: 0.9rem; color: var(--slate-500);" id="receiptIdText">Specification ID: --</p>
           <p style="font-size: 0.9rem; color: var(--slate-500);" id="receiptDateText">Date: --</p>
         </div>
       </div>
@@ -268,7 +272,7 @@
       </div>
 
       <div class="next-steps-card">
-        <h4>📋 What Happens Next?</h4>
+        <h4><i class="fas fa-clipboard-list" style="margin-right: 8px; color: var(--primary);"></i> What Happens Next?</h4>
         <ul class="next-steps-list">
           <li><i class="fas fa-calendar-check"></i> <div><strong>Schedule Kickoff:</strong> We will reach out to you via your email within 12 hours to schedule a 30-minute kickoff Zoom call.</div></li>
           <li><i class="fas fa-file-invoice"></i> <div><strong>Submit Materials:</strong> Please organize your logo, high-resolution outreach photos, brand color preferences, and copy files.</div></li>
@@ -306,111 +310,41 @@
     </div>
   </div>
 
-  <!-- ========== MOCK PAYMENT INTERACTIVE GATEWAY OVERLAY ========== -->
+  <!-- ========== DIRECT SUBMISSION OVERLAY ========== -->
   <div class="checkout-overlay" id="checkoutOverlay">
     <div class="checkout-dialog">
-      <div class="checkout-header">
-        <h4><i class="fas fa-lock"></i> Paystack Secure Checkout</h4>
+      <div class="checkout-header" style="background: var(--slate-900);">
+        <h4><i class="fas fa-paper-plane"></i> Submitting Request</h4>
         <button class="close-checkout" id="closeCheckoutBtn"><i class="fas fa-times"></i></button>
       </div>
-      <div class="checkout-body">
-        <!-- Main checkout UI -->
-        <div id="checkoutFormContent">
-          <div class="checkout-summary">
-            <div class="checkout-summary-row">
-              <span>Merchant:</span>
-              <strong>DimaCode Services</strong>
-            </div>
-            <div class="checkout-summary-row">
-              <span>Item:</span>
-              <span id="checkoutSummaryItem">--</span>
-            </div>
-            <div class="checkout-summary-row">
-              <span>Amount:</span>
-              <span id="checkoutSummaryAmount" style="color: var(--success); font-weight: 700;">₦0</span>
-            </div>
-          </div>
-
-          <div class="checkout-tabs">
-            <div class="checkout-tab active" id="tabCardBtn"><i class="fas fa-credit-card"></i> Card</div>
-            <div class="checkout-tab" id="tabBankBtn"><i class="fas fa-university"></i> Bank Transfer</div>
-          </div>
-
-          <div class="checkout-panes">
-            <!-- Card Panel -->
-            <div class="checkout-pane active" id="paneCard">
-              <form id="mockCardPaymentForm">
-                <div class="form-group" style="margin-bottom: 1.2rem;">
-                  <label for="cardNumber" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem;">Card Number</label>
-                  <input type="text" id="cardNumber" placeholder="4000 1234 5678 9010" maxlength="19" required>
-                </div>
-                <div class="card-inputs-grid">
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label for="cardExpiry" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem;">Expiry (MM/YY)</label>
-                    <input type="text" id="cardExpiry" placeholder="12/28" maxlength="5" required>
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label for="cardCVV" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem;">CVV</label>
-                    <input type="text" id="cardCVV" placeholder="123" maxlength="3" required>
-                  </div>
-                </div>
-                
-                <div class="form-group" style="margin-top: 1.2rem; margin-bottom: 0;">
-                  <label for="cardPin" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem;">Card PIN</label>
-                  <input type="password" id="cardPin" placeholder="****" maxlength="4" style="letter-spacing: 0.8rem; text-align: center;" required>
-                </div>
-
-                <button type="submit" class="mock-paystack-btn" id="paystackPayBtn">Pay ₦0</button>
-              </form>
-            </div>
-
-            <!-- Bank Transfer Panel -->
-            <div class="checkout-pane" id="paneBank">
-              <div style="background: var(--slate-50); border-radius: 12px; padding: 1.2rem; border: 1px solid var(--slate-200); text-align: center; font-size: 0.95rem;">
-                <p style="color: var(--slate-500); margin-bottom: 0.6rem;">Transfer to the following bank account:</p>
-                <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.4rem; color: var(--slate-900); font-weight: 700; margin-bottom: 0.3rem;">Wema Bank</h3>
-                <p style="font-weight: 700; font-size: 1.2rem; color: var(--primary); letter-spacing: 1px; margin-bottom: 0.4rem;">0123456789</p>
-                <p style="font-size: 0.85rem; color: var(--slate-600); margin-bottom: 0.8rem;">Account Name: <strong>DimaCode Technologies Limited</strong></p>
-                <p style="font-size: 0.8rem; color: var(--slate-400);">Once transferred, click the button below to authorize validation.</p>
-              </div>
-              <button type="button" class="mock-paystack-btn" id="bankPaidBtn"><i class="fas fa-check-circle"></i> I've Sent The Money</button>
-            </div>
-          </div>
-        </div>
-
+      <div class="checkout-body" style="padding: 2.5rem 2rem;">
+        
         <!-- Spinner Loading View -->
-        <div class="checkout-spinner-view" id="checkoutSpinnerView">
+        <div class="checkout-spinner-view" id="checkoutSpinnerView" style="display: block; text-align: center;">
           <div class="spinner"></div>
-          <h4 style="font-family: 'Poppins', sans-serif; font-size: 1.1rem; color: var(--slate-800); margin-bottom: 0.5rem;" id="checkoutSpinnerText">Authorizing transaction...</h4>
-          <p style="font-size: 0.85rem; color: var(--slate-500);">Please do not refresh this page.</p>
+          <h4 style="font-family: 'Poppins', sans-serif; font-size: 1.15rem; color: var(--slate-800); margin-top: 1.2rem; margin-bottom: 0.5rem;" id="checkoutSpinnerText">Sending requirements to DimaCode...</h4>
+          <p style="font-size: 0.85rem; color: var(--slate-500);">Please wait while we establish connection.</p>
         </div>
 
-        <!-- OTP Entry View -->
-        <div class="checkout-otp-view" id="checkoutOtpView">
-          <div class="icon-wrap" style="width: 60px; height: 60px; background: #EFF6FF; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.8rem;"><i class="fas fa-key"></i></div>
-          <h4 style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; color: var(--slate-900); margin-bottom: 0.5rem;">Enter Verification Code</h4>
-          <p style="font-size: 0.85rem; color: var(--slate-500); max-width: 320px; margin: 0 auto 1.2rem;">An OTP has been sent to the phone number associated with your card. Enter it below to complete this transaction.</p>
+        <!-- Success view -->
+        <div class="checkout-success-view" id="checkoutSuccessView" style="display: none; text-align: center;">
+          <div class="checkmark-wrap" style="background: rgba(34, 197, 94, 0.1); color: var(--success); width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 1.5rem;"><i class="fas fa-check"></i></div>
           
-          <form id="checkoutOtpForm">
-            <div class="otp-input-wrap">
-              <input type="text" id="otpDigit1" maxlength="1" required autofocus>
-              <input type="text" id="otpDigit2" maxlength="1" required>
-              <input type="text" id="otpDigit3" maxlength="1" required>
-              <input type="text" id="otpDigit4" maxlength="1" required>
-              <input type="text" id="otpDigit5" maxlength="1" required>
-              <input type="text" id="otpDigit6" maxlength="1" required>
-            </div>
-            <button type="submit" class="mock-paystack-btn" style="background: var(--primary); box-shadow: 0 8px 16px -4px rgba(37,99,235,0.4);">Validate OTP</button>
-          </form>
+          <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.45rem; color: var(--slate-900); margin-bottom: 0.6rem; font-weight: 700;">Submission Successful!</h3>
+          <p style="font-size: 0.95rem; color: var(--slate-600); margin-bottom: 1.8rem; line-height: 1.6;">Your project specifications have been delivered. Let's align on next steps!</p>
+          
+          <div style="background: var(--slate-50); padding: 1.5rem 1.2rem; border-radius: 20px; border: 1px solid var(--slate-200); margin-bottom: 2rem;">
+            <p style="font-size: 0.92rem; color: var(--slate-800); font-weight: 600; margin-bottom: 1rem;">
+              Click the icon to continue our chat on WhatsApp:
+            </p>
+            <a href="https://wa.me/2348060249813?text=Hi%20DimaCode%2C%20I%20just%20completed%20the%20NGO%20Website%20Discovery%20Form%20on%20your%20portal." target="_blank" style="display: inline-flex; align-items: center; justify-content: center; width: 65px; height: 65px; background: #25D366; color: white; border-radius: 50%; font-size: 2.5rem; box-shadow: 0 10px 24px -6px rgba(37,211,102,0.45); transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          </div>
+
+          <button type="button" class="btn-primary" id="viewInvoiceBtn" style="width: 100%; font-weight: 700; padding: 1rem 1.5rem;"><i class="fas fa-file-alt"></i> View Summary & Timeline</button>
         </div>
 
-        <!-- Success Animation View -->
-        <div class="checkout-success-view" id="checkoutSuccessView">
-          <div class="checkmark-wrap"><i class="fas fa-check"></i></div>
-          <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; color: var(--slate-900); margin-bottom: 0.5rem; font-weight: 700;">Payment Successful!</h3>
-          <p style="font-size: 0.95rem; color: var(--slate-600); margin-bottom: 2rem;">Your commitment fee has been successfully charged.</p>
-          <button type="button" class="btn-primary" id="viewInvoiceBtn" style="width: 100%;"><i class="fas fa-file-invoice"></i> View Invoice & Timeline</button>
-        </div>
       </div>
     </div>
   </div>

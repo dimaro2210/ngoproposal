@@ -855,6 +855,86 @@ input:focus, select:focus, textarea:focus {
   cursor: pointer;
 }
 
+/* Page Selector Checkboxes */
+.checkbox-page-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  background: var(--slate-50);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--slate-200);
+  margin-bottom: 0.8rem;
+}
+
+.page-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 1.5px solid var(--slate-200);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.page-checkbox-item:hover {
+  border-color: var(--primary);
+  background: var(--slate-50);
+}
+
+.page-checkbox-item.selected {
+  border-color: var(--primary);
+  background: rgba(37, 99, 235, 0.05);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.page-checkbox-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--slate-100);
+  border-color: var(--slate-200);
+}
+
+.page-checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.custom-page-input-wrapper {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+.custom-page-input-wrapper input {
+  flex: 1;
+}
+
+.btn-add-custom-page {
+  padding: 0.8rem 1.2rem;
+  background: var(--slate-800);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.btn-add-custom-page:hover {
+  background: var(--slate-950);
+}
+
 .payment-option {
   background: var(--slate-50);
   padding: 1.5rem;

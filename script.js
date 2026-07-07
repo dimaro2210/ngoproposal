@@ -1,7 +1,7 @@
 (function() {
   // ---------- WEB3FORMS CONFIGURATION ----------
   // Replace with your Web3Forms Access Key from https://web3forms.com
-  const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
+  const WEB3FORMS_ACCESS_KEY = "073e0963-fd22-4886-8a40-5ccd11749be3";
 
   // ---------- PLAN DATA ----------
   const plans = [
@@ -9,7 +9,7 @@
       id: 'basic',
       title: 'Basic NGO Website',
       price: 180000,
-      timeline: '⏱️ Delivery: 3 Days',
+      timeline: 'Delivery: 3 Days',
       description: 'Perfect for newly established NGOs seeking a professional online presence.',
       features: [
         'Responsive Website Design',
@@ -31,7 +31,7 @@
       id: 'standard',
       title: 'Standard NGO Website',
       price: 350000,
-      timeline: '⏱️ Delivery: 1 Week',
+      timeline: 'Delivery: 1 Week',
       description: 'Designed for NGOs looking to increase donations, volunteers, and community engagement.',
       features: [
         'Everything in Basic Package',
@@ -52,7 +52,7 @@
       id: 'premium',
       title: 'Premium NGO Portal',
       price: 650000,
-      timeline: '⏱️ Delivery: 2 Weeks',
+      timeline: 'Delivery: 2 Weeks',
       description: 'Full-featured enterprise suite for established nonprofits needing advanced integrations.',
       features: [
         'Everything in Standard Package',
@@ -125,38 +125,10 @@
   // Checkout simulator elements
   const checkoutOverlay = document.getElementById('checkoutOverlay');
   const closeCheckoutBtn = document.getElementById('closeCheckoutBtn');
-  const checkoutSummaryItem = document.getElementById('checkoutSummaryItem');
-  const checkoutSummaryAmount = document.getElementById('checkoutSummaryAmount');
-  const tabCardBtn = document.getElementById('tabCardBtn');
-  const tabBankBtn = document.getElementById('tabBankBtn');
-  const paneCard = document.getElementById('paneCard');
-  const paneBank = document.getElementById('paneBank');
-  const checkoutFormContent = document.getElementById('checkoutFormContent');
   const checkoutSpinnerView = document.getElementById('checkoutSpinnerView');
   const checkoutSpinnerText = document.getElementById('checkoutSpinnerText');
-  const checkoutOtpView = document.getElementById('checkoutOtpView');
   const checkoutSuccessView = document.getElementById('checkoutSuccessView');
-  const paystackPayBtn = document.getElementById('paystackPayBtn');
-  const bankPaidBtn = document.getElementById('bankPaidBtn');
   const viewInvoiceBtn = document.getElementById('viewInvoiceBtn');
-
-  // Card input formatting & fields
-  const cardNumber = document.getElementById('cardNumber');
-  const cardExpiry = document.getElementById('cardExpiry');
-  const cardCVV = document.getElementById('cardCVV');
-  const cardPin = document.getElementById('cardPin');
-  const mockCardForm = document.getElementById('mockCardPaymentForm');
-
-  // OTP digits auto-focus chain
-  const otpInputs = [
-    document.getElementById('otpDigit1'),
-    document.getElementById('otpDigit2'),
-    document.getElementById('otpDigit3'),
-    document.getElementById('otpDigit4'),
-    document.getElementById('otpDigit5'),
-    document.getElementById('otpDigit6')
-  ];
-  const checkoutOtpForm = document.getElementById('checkoutOtpForm');
 
   // Invoice elements
   const receiptIdText = document.getElementById('receiptIdText');
@@ -218,7 +190,11 @@
 
       const timeline = document.createElement('div');
       timeline.className = 'timeline';
-      timeline.textContent = plan.timeline;
+      const clock = document.createElement('i');
+      clock.className = 'fas fa-clock';
+      clock.style.marginRight = '6px';
+      timeline.appendChild(clock);
+      timeline.appendChild(document.createTextNode(plan.timeline));
       card.appendChild(timeline);
 
       const desc = document.createElement('p');
@@ -319,7 +295,7 @@
           updateWizardStep();
         } else {
           // Submit form (triggered on last step)
-          triggerCheckout();
+          triggerDirectSubmission();
         }
       }
     });
@@ -328,88 +304,9 @@
       updateFormPrice();
     });
 
-    // Checkout interactions
+    // Submission overlay interactions
     closeCheckoutBtn.addEventListener('click', () => {
       checkoutOverlay.style.display = 'none';
-    });
-
-    tabCardBtn.addEventListener('click', () => {
-      tabCardBtn.classList.add('active');
-      tabBankBtn.classList.remove('active');
-      paneCard.classList.add('active');
-      paneBank.classList.remove('active');
-    });
-
-    tabBankBtn.addEventListener('click', () => {
-      tabBankBtn.classList.add('active');
-      tabCardBtn.classList.remove('active');
-      paneBank.classList.add('active');
-      paneCard.classList.remove('active');
-    });
-
-    // Format card input fields
-    cardNumber.addEventListener('input', (e) => {
-      let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-      let matches = val.match(/\d{4,16}/g);
-      let match = (matches && matches[0]) || '';
-      let parts = [];
-
-      for (let i = 0, len = match.length; i < len; i += 4) {
-        parts.push(match.substring(i, i + 4));
-      }
-
-      if (parts.length > 0) {
-        e.target.value = parts.join(' ');
-      } else {
-        e.target.value = val;
-      }
-    });
-
-    cardExpiry.addEventListener('input', (e) => {
-      let val = e.target.value.replace(/\D/g, '');
-      if (val.length >= 2) {
-        e.target.value = val.substring(0, 2) + '/' + val.substring(2, 4);
-      } else {
-        e.target.value = val;
-      }
-    });
-
-    cardCVV.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/\D/g, '');
-    });
-
-    cardPin.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/\D/g, '');
-    });
-
-    // OTP inputs auto-focus chain
-    otpInputs.forEach((input, index) => {
-      input.addEventListener('input', (e) => {
-        if (e.target.value.length === 1 && index < otpInputs.length - 1) {
-          otpInputs[index + 1].focus();
-        }
-      });
-
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
-          otpInputs[index - 1].focus();
-        }
-      });
-    });
-
-    // Mock payment handlers
-    mockCardForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      startCardAuthorization();
-    });
-
-    bankPaidBtn.addEventListener('click', () => {
-      startBankValidation();
-    });
-
-    checkoutOtpForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      validateOtp();
     });
 
     viewInvoiceBtn.addEventListener('click', () => {
@@ -468,7 +365,11 @@
     metaDiv.appendChild(priceDiv);
     const timelineDiv = document.createElement('div');
     timelineDiv.className = 'timeline';
-    timelineDiv.textContent = plan.timeline;
+    const clock = document.createElement('i');
+    clock.className = 'fas fa-clock';
+    clock.style.marginRight = '6px';
+    timelineDiv.appendChild(clock);
+    timelineDiv.appendChild(document.createTextNode(plan.timeline));
     metaDiv.appendChild(timelineDiv);
     headerDiv.appendChild(metaDiv);
 
@@ -587,6 +488,8 @@
     document.getElementById('q15').value = `₦${plan.price.toLocaleString()}`;
     document.getElementById('q16').value = plan.id === 'basic' ? '3 Days' : (plan.id === 'standard' ? '1 Week' : '2 Weeks');
 
+    renderPageSelector(plan);
+
     originalPrice = plan.price;
     updateFormPrice();
 
@@ -600,13 +503,12 @@
       payPercent = 45;
       payAmount = originalPrice * 0.45;
       balanceAmount = originalPrice * 0.55;
-      nextStepBtn.textContent = `Submit & Pay 45% Deposit (₦${payAmount.toLocaleString()}) ✨`;
     } else {
       payPercent = 100;
       payAmount = originalPrice;
       balanceAmount = 0;
-      nextStepBtn.textContent = `Submit & Pay Full Amount (₦${payAmount.toLocaleString()}) ✨`;
     }
+    nextStepBtn.textContent = "Submit Discovery Form ✨";
     partialAmount.textContent = (originalPrice * 0.45).toLocaleString();
   }
 
@@ -655,8 +557,8 @@
 
   function validateStep(step) {
     // Get all required inputs in the current step panel
-    const currentPanel = panels[step - 1];
-    const requiredInputs = currentPanel.querySelectorAll('[required]');
+    const currentPanel = panels.at(step - 1);
+    const requiredInputs = currentPanel ? currentPanel.querySelectorAll('[required]') : [];
     let valid = true;
 
     requiredInputs.forEach((input) => {
@@ -679,65 +581,13 @@
     return valid;
   }
 
-  // 4. Payment Gateway Checkout Simulator
-  function triggerCheckout() {
-    // Get payment checkout totals
-    checkoutSummaryItem.textContent = activePlan.title + ` (${payPercent}% Deposit)`;
-    checkoutSummaryAmount.textContent = `₦${payAmount.toLocaleString()}`;
-    paystackPayBtn.textContent = `Pay ₦${payAmount.toLocaleString()}`;
-
-    // Reset views in checkout dialog
-    checkoutFormContent.style.display = 'block';
-    checkoutSpinnerView.style.display = 'none';
-    checkoutOtpView.style.display = 'none';
+  // 4. Direct Form Submission Flow
+  function triggerDirectSubmission() {
+    checkoutOverlay.style.display = 'flex';
+    checkoutSpinnerView.style.display = 'block';
     checkoutSuccessView.style.display = 'none';
 
-    // Reset input fields
-    mockCardForm.reset();
-
-    checkoutOverlay.style.display = 'flex';
-  }
-
-  // Simulator Loading/OTP sequence
-  function startCardAuthorization() {
-    checkoutFormContent.style.display = 'none';
-    checkoutSpinnerView.style.display = 'block';
-    checkoutSpinnerText.textContent = 'Authorizing card credentials...';
-
-    setTimeout(() => {
-      checkoutSpinnerView.style.display = 'none';
-      checkoutOtpView.style.display = 'block';
-      otpInputs[0].focus();
-    }, 2200);
-  }
-
-  function startBankValidation() {
-    checkoutFormContent.style.display = 'none';
-    checkoutSpinnerView.style.display = 'block';
-    checkoutSpinnerText.textContent = 'Listening for bank transfer notification...';
-
-    setTimeout(() => {
-      checkoutSpinnerView.style.display = 'none';
-      checkoutSuccessView.style.display = 'block';
-      sendWeb3FormsSubmission();
-    }, 3000);
-  }
-
-  function validateOtp() {
-    let otpCode = '';
-    otpInputs.forEach((input) => {
-      otpCode += input.value;
-    });
-
-    checkoutOtpView.style.display = 'none';
-    checkoutSpinnerView.style.display = 'block';
-    checkoutSpinnerText.textContent = 'Validating verification code...';
-
-    setTimeout(() => {
-      checkoutSpinnerView.style.display = 'none';
-      checkoutSuccessView.style.display = 'block';
-      sendWeb3FormsSubmission();
-    }, 1800);
+    sendWeb3FormsSubmission();
   }
 
   // 5. Digital Receipt Generator (Printable)
@@ -756,12 +606,25 @@
     // Customer details
     receiptClientName.textContent = document.getElementById('contactName').value;
     receiptClientNGO.textContent = document.getElementById('q1').value;
-    receiptClientContact.textContent = `📧 ${document.getElementById('contactEmail').value} | 📞 ${document.getElementById('contactPhone').value}`;
+    
+    receiptClientContact.replaceChildren();
+    
+    const emailIcon = document.createElement('i');
+    emailIcon.className = 'fas fa-envelope';
+    emailIcon.style.marginRight = '5px';
+    receiptClientContact.appendChild(emailIcon);
+    receiptClientContact.appendChild(document.createTextNode(' ' + document.getElementById('contactEmail').value + ' | '));
+    
+    const phoneIcon = document.createElement('i');
+    phoneIcon.className = 'fas fa-phone-alt';
+    phoneIcon.style.marginRight = '5px';
+    receiptClientContact.appendChild(phoneIcon);
+    receiptClientContact.appendChild(document.createTextNode(' ' + document.getElementById('contactPhone').value));
 
     // Project details
     receiptPlanTitle.textContent = activePlan.title;
-    receiptProjectTimeline.textContent = `Delivery Timeline: ${activePlan.timeline.replace('⏱️ ', '')}`;
-    receiptItemTitle.textContent = activePlan.title + ` Custom Web Build (${payPercent}% Paid)`;
+    receiptProjectTimeline.textContent = `Delivery Timeline: ${activePlan.timeline}`;
+    receiptItemTitle.textContent = activePlan.title + ` Custom Web Build (${payPercent}% Selected)`;
 
     // Calculations
     receiptFullPriceText.textContent = `₦${originalPrice.toLocaleString()}`;
@@ -817,13 +680,205 @@
       let json = await response.json();
       if (response.status === 200) {
         console.log("Discovery form successfully submitted to Web3Forms!");
+        checkoutSpinnerView.style.display = 'none';
+        checkoutSuccessView.style.display = 'block';
       } else {
         console.error("Web3Forms submission failed:", json);
+        alert("Form submission failed. Please try again or contact us directly on WhatsApp.");
+        checkoutOverlay.style.display = 'none';
       }
     })
     .catch((error) => {
       console.error("Web3Forms API connection error:", error);
+      // Fallback: Still show success so user isn't stuck and can chat on WhatsApp
+      checkoutSpinnerView.style.display = 'none';
+      checkoutSuccessView.style.display = 'block';
     });
+  }
+
+  function renderPageSelector(plan) {
+    const container = document.getElementById('dynamicPagesContainer');
+    const label = document.getElementById('selectedPlanLabel');
+    const info = document.getElementById('pageSelectionInfo');
+    const hiddenInput = document.getElementById('q7');
+
+    if (!container || !label || !info || !hiddenInput) return;
+
+    label.textContent = plan.title;
+
+    // Define pool of possible pages with their details (using FontAwesome class names instead of emojis)
+    const pagePool = [
+      { id: 'home', label: 'Home', iconClass: 'fas fa-home', default: true, required: true },
+      { id: 'about', label: 'About Us', iconClass: 'fas fa-info-circle', default: true, required: false },
+      { id: 'programs', label: 'Programs / Outreaches', iconClass: 'fas fa-tasks', default: true, required: false },
+      { id: 'gallery', label: 'Photo Gallery', iconClass: 'fas fa-images', default: true, required: false },
+      { id: 'contact', label: 'Contact Us', iconClass: 'fas fa-envelope', default: true, required: true },
+      { id: 'blog', label: 'News & Blog Stories', iconClass: 'fas fa-newspaper', default: plan.id !== 'basic', required: false, minPlan: 'standard' },
+      { id: 'donate', label: 'Online Donation Form', iconClass: 'fas fa-heart', default: plan.id !== 'basic', required: false, minPlan: 'standard' },
+      { id: 'volunteer', label: 'Volunteer Registration', iconClass: 'fas fa-users', default: plan.id !== 'basic', required: false, minPlan: 'standard' },
+      { id: 'newsletter', label: 'Newsletter Signup', iconClass: 'fas fa-paper-plane', default: plan.id !== 'basic', required: false, minPlan: 'standard' },
+      { id: 'events', label: 'Event Ticketing / Booking', iconClass: 'fas fa-ticket-alt', default: plan.id === 'premium', required: false, minPlan: 'premium' },
+      { id: 'portal', label: 'Member Login Portal', iconClass: 'fas fa-user-lock', default: plan.id === 'premium', required: false, minPlan: 'premium' },
+      { id: 'multilingual', label: 'Multilingual Selector', iconClass: 'fas fa-language', default: plan.id === 'premium', required: false, minPlan: 'premium' }
+    ];
+
+    // Filter pages that are supported by the plan
+    const availablePages = pagePool.filter(p => {
+      if (!p.minPlan) return true;
+      if (plan.id === 'basic') return false; 
+      if (plan.id === 'standard') return p.minPlan === 'standard';
+      return true; // Premium gets all
+    });
+
+    container.replaceChildren(); // Safe clear
+
+    // Max limit definition
+    const maxPages = plan.id === 'basic' ? 5 : (plan.id === 'standard' ? 10 : Infinity);
+    info.textContent = plan.id === 'basic'
+      ? "Basic plan: Up to 5 pages included. (Home and Contact are required)"
+      : (plan.id === 'standard' ? `Standard plan: Up to 10 pages included.` : "Premium plan: Unlimited pages included.");
+
+    const selectedPages = new Set();
+
+    // Helper to update the hidden input value
+    const updateHiddenInput = () => {
+      const pageNames = Array.from(selectedPages);
+      // Add custom pages if any
+      const customItems = container.querySelectorAll('.custom-page-checkbox');
+      customItems.forEach(item => {
+        if (item.checked) {
+          pageNames.push(item.value);
+        }
+      });
+      hiddenInput.value = pageNames.join(', ');
+    };
+
+    // Render checkboxes
+    availablePages.forEach(p => {
+      const itemLabel = document.createElement('label');
+      itemLabel.className = 'page-checkbox-item';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = p.label;
+      
+      if (p.default) {
+        checkbox.checked = true;
+        selectedPages.add(p.label);
+        itemLabel.classList.add('selected');
+      }
+
+      if (p.required) {
+        checkbox.disabled = true; // Always checked & locked
+        itemLabel.classList.add('disabled');
+      }
+
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          if (selectedPages.size >= maxPages) {
+            checkbox.checked = false;
+            alert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
+            return;
+          }
+          selectedPages.add(p.label);
+          itemLabel.classList.add('selected');
+        } else {
+          selectedPages.delete(p.label);
+          itemLabel.classList.remove('selected');
+        }
+        updateHiddenInput();
+      });
+
+      itemLabel.appendChild(checkbox);
+
+      const icon = document.createElement('i');
+      icon.className = p.iconClass;
+      icon.style.marginRight = '8px';
+      itemLabel.appendChild(icon);
+
+      const textSpan = document.createElement('span');
+      textSpan.textContent = p.label;
+      itemLabel.appendChild(textSpan);
+      container.appendChild(itemLabel);
+    });
+
+    // Custom Page Adder
+    const customWrapper = document.createElement('div');
+    customWrapper.className = 'custom-page-input-wrapper';
+
+    const customInput = document.createElement('input');
+    customInput.type = 'text';
+    customInput.placeholder = 'Add a custom page (e.g. FAQ, Impact Report)';
+    customInput.style.padding = '0.6rem 1rem';
+    customInput.style.borderRadius = '12px';
+    customInput.style.border = '1px solid var(--slate-200)';
+    customInput.style.background = 'white';
+
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'btn-add-custom-page';
+    addBtn.textContent = 'Add Page';
+
+    addBtn.addEventListener('click', () => {
+      const val = customInput.value.trim();
+      if (!val) return;
+
+      if (selectedPages.size >= maxPages) {
+        alert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
+        return;
+      }
+
+      // Add to selection
+      selectedPages.add(val);
+
+      // Create checkbox dynamically
+      const itemLabel = document.createElement('label');
+      itemLabel.className = 'page-checkbox-item selected';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = val;
+      checkbox.checked = true;
+      checkbox.className = 'custom-page-checkbox';
+
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          if (selectedPages.size >= maxPages) {
+            checkbox.checked = false;
+            alert(`Your selected plan allows a maximum of ${maxPages} pages. Upgrade to Standard or Premium for more pages.`);
+            return;
+          }
+          selectedPages.add(val);
+          itemLabel.classList.add('selected');
+        } else {
+          selectedPages.delete(val);
+          itemLabel.classList.remove('selected');
+        }
+        updateHiddenInput();
+      });
+
+      itemLabel.appendChild(checkbox);
+
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-file-alt';
+      icon.style.marginRight = '8px';
+      itemLabel.appendChild(icon);
+
+      const textSpan = document.createElement('span');
+      textSpan.textContent = val;
+      itemLabel.appendChild(textSpan);
+
+      // Insert before the custom wrapper
+      container.insertBefore(itemLabel, customWrapper);
+      customInput.value = '';
+      updateHiddenInput();
+    });
+
+    customWrapper.appendChild(customInput);
+    customWrapper.appendChild(addBtn);
+    container.appendChild(customWrapper);
+
+    updateHiddenInput();
   }
 
   init();

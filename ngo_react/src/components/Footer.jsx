@@ -34,7 +34,7 @@ export default function Footer() {
             <h4>Contact Us</h4>
             <ul className="footer-contact">
               <li><i className="fas fa-map-marker-alt"></i> Abuja, Federal Capital Territory, Nigeria</li>
-              <li><i className="fas fa-phone-alt"></i> +(234) 806-024-9813</li>
+              <li><i className="fas fa-phone-alt"></i> +(234) 703-443-7910</li>
               <li><i className="far fa-envelope"></i> info@chariusngo.org</li>
             </ul>
           </div>

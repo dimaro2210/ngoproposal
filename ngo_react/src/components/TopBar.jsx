@@ -3,7 +3,7 @@ export default function TopBar() {
     <div className="top-bar">
       <div className="container top-bar-container">
         <div className="top-bar-left">
-          <span><i className="fas fa-phone-alt"></i> +(234) 806-024-9813</span>
+          <span><i className="fas fa-phone-alt"></i> +(234) 703-443-7910</span>
           <span><i className="fas fa-map-marker-alt"></i> Abuja, Nigeria</span>
         </div>
         <div className="top-bar-right">

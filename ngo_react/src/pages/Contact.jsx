@@ -89,7 +89,7 @@ export default function Contact() {
                   <i className="fas fa-phone-alt"></i>
                   <div>
                     <h4>Call Center</h4>
-                    <p>+(234) 806-024-9813</p>
+                    <p>+(234) 703-443-7910</p>
                   </div>
                 </div>
                 <div className="info-card">

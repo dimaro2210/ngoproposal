@@ -171,7 +171,7 @@ export default function Home() {
                   <i className="fas fa-phone-alt"></i>
                   <div>
                     <span>Call Us</span>
-                    <h4>+(234) 806-024-9813</h4>
+                    <h4>+(234) 703-443-7910</h4>
                   </div>
                 </div>
               </div>

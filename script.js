@@ -64,60 +64,144 @@ document.addEventListener('DOMContentLoaded', () => {
         const progress = Math.min(current / target, 1);
         const percent = Math.round(progress * 100);
 
+        // ── Build card safely via DOM API — no innerHTML with user data ──
+
         const card = document.createElement('div');
         card.className = 'campaign-card';
-        card.innerHTML = `
-          <div class="card-img-wrap">
-            <img src="${program.image_url || 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=600'}" alt="${program.title}">
-            <span class="card-tag">${program.status}</span>
-          </div>
-          <div class="card-body">
-            <h3>${program.title}</h3>
-            <p>${program.description}</p>
-            <div class="progress-section">
-              <div class="progress-info">
-                <span class="progress-label">Campaign Progress</span>
-                <span class="progress-value">${percent}%</span>
-              </div>
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fill" style="width: ${percent}%"></div>
-              </div>
-              <div class="amount-details">
-                <span class="raised">₦${current.toLocaleString()} <span style="font-weight:400; font-size:0.8rem; color:var(--text-muted);">raised</span></span>
-                <span class="target">Goal: ₦${target.toLocaleString()}</span>
-              </div>
-            </div>
-            <button class="btn-donate-card" data-id="${program.id}" data-title="${program.title}">
-              <i class="fas fa-heart"></i> Donate Now
-            </button>
-          </div>
-        `;
-        campaignsGrid.appendChild(card);
-      });
 
-      // Hook up donation click events
-      document.querySelectorAll('.btn-donate-card').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = btn.getAttribute('data-id');
-          const title = btn.getAttribute('data-title');
-          
-          document.getElementById('donationProgramId').value = id;
-          document.getElementById('donationProgramTitle').textContent = `Campaign: ${title}`;
+        // Image wrapper
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'card-img-wrap';
+
+        const img = document.createElement('img');
+        // setAttribute keeps image_url as a plain attribute value (not executed as HTML)
+        const safeImgUrl = (program.image_url && /^https?:\/\//i.test(program.image_url))
+          ? program.image_url
+          : 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=600';
+        img.setAttribute('src', safeImgUrl);
+        img.setAttribute('loading', 'lazy');
+        img.setAttribute('alt', ''); // decorative — title shown in heading below
+
+        const tag = document.createElement('span');
+        tag.className = 'card-tag';
+        tag.textContent = program.status;           // textContent, never innerHTML
+
+        imgWrap.appendChild(img);
+        imgWrap.appendChild(tag);
+
+        // Card body
+        const cardBody = document.createElement('div');
+        cardBody.className = 'card-body';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = program.title;             // safe
+
+        const desc = document.createElement('p');
+        desc.textContent = program.description;     // safe
+
+        // Progress section (all computed numbers — safe)
+        const progressSection = document.createElement('div');
+        progressSection.className = 'progress-section';
+
+        const progressInfo = document.createElement('div');
+        progressInfo.className = 'progress-info';
+
+        const progressLbl = document.createElement('span');
+        progressLbl.className = 'progress-label';
+        progressLbl.textContent = 'Campaign Progress';
+
+        const progressVal = document.createElement('span');
+        progressVal.className = 'progress-value';
+        progressVal.textContent = `${percent}%`;
+
+        progressInfo.appendChild(progressLbl);
+        progressInfo.appendChild(progressVal);
+
+        const barBg = document.createElement('div');
+        barBg.className = 'progress-bar-bg';
+
+        const barFill = document.createElement('div');
+        barFill.className = 'progress-bar-fill';
+        barFill.style.width = `${percent}%`;        // number-derived, safe
+
+        barBg.appendChild(barFill);
+
+        const amountDetails = document.createElement('div');
+        amountDetails.className = 'amount-details';
+
+        const raisedSpan = document.createElement('span');
+        raisedSpan.className = 'raised';
+        raisedSpan.textContent = `₦${current.toLocaleString()}`;
+
+        const raisedLabel = document.createElement('span');
+        raisedLabel.style.cssText = 'font-weight:400; font-size:0.8rem; color:var(--text-muted)';
+        raisedLabel.textContent = ' raised';
+
+        raisedSpan.appendChild(raisedLabel);
+
+        const targetSpan = document.createElement('span');
+        targetSpan.className = 'target';
+        targetSpan.textContent = `Goal: ₦${target.toLocaleString()}`;
+
+        amountDetails.appendChild(raisedSpan);
+        amountDetails.appendChild(targetSpan);
+
+        progressSection.appendChild(progressInfo);
+        progressSection.appendChild(barBg);
+        progressSection.appendChild(amountDetails);
+
+        // Donate button — data-* set via setAttribute (never interpreted as HTML)
+        const donateBtn = document.createElement('button');
+        donateBtn.className = 'btn-donate-card';
+        donateBtn.setAttribute('data-id', program.id);
+        donateBtn.setAttribute('data-title', program.title);
+
+        const heartIcon = document.createElement('i');
+        heartIcon.className = 'fas fa-heart';
+
+        donateBtn.appendChild(heartIcon);
+        donateBtn.append(' Donate Now');
+
+        // Attach click handler directly (no need for querySelectorAll later)
+        donateBtn.addEventListener('click', () => {
+          document.getElementById('donationProgramId').value = program.id;
+          document.getElementById('donationProgramTitle').textContent = `Campaign: ${program.title}`;
           openOverlay(donationModal);
         });
-      });
+
+        cardBody.appendChild(h3);
+        cardBody.appendChild(desc);
+        cardBody.appendChild(progressSection);
+        cardBody.appendChild(donateBtn);
+
+        card.appendChild(imgWrap);
+        card.appendChild(cardBody);
+        campaignsGrid.appendChild(card);
+      }); // end programs.forEach
 
     } catch (err) {
       console.error(err);
       if (campaignsLoading) campaignsLoading.style.display = 'none';
       if (campaignsGrid) {
-        campaignsGrid.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; color: var(--error); padding: 2rem;">
-            <i class="fas fa-exclamation-circle" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
-            <h3>Unable to load campaign statistics</h3>
-            <p>Please verify that the Django server is running locally on port 8001.</p>
-          </div>
-        `;
+        campaignsGrid.innerHTML = '';
+        const errWrap = document.createElement('div');
+        errWrap.style.cssText = 'grid-column:1/-1;text-align:center;color:var(--error);padding:2rem';
+
+        const errIcon = document.createElement('i');
+        errIcon.className = 'fas fa-exclamation-circle';
+        errIcon.style.cssText = 'font-size:2.5rem;margin-bottom:1rem;display:block';
+
+        const errTitle = document.createElement('h3');
+        errTitle.textContent = 'Unable to load campaign statistics';
+
+        const errMsg = document.createElement('p');
+        errMsg.style.color = 'var(--text-secondary)';
+        errMsg.textContent = 'Please verify that the Django server is running locally on port 8001.';
+
+        errWrap.appendChild(errIcon);
+        errWrap.appendChild(errTitle);
+        errWrap.appendChild(errMsg);
+        campaignsGrid.appendChild(errWrap);
       }
     }
   };

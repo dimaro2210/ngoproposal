@@ -154,6 +154,10 @@ STATIC_URL = 'static/'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8081', # Expo Dev server port
     'http://127.0.0.1:8081',
+    'http://localhost:8085', # Web frontend
+    'http://127.0.0.1:8085',
+    'http://localhost:8086',
+    'http://127.0.0.1:8086',
 ]
 CORS_ALLOW_CREDENTIALS = True
 

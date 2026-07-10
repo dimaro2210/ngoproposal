@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import TeamStack from '../components/TeamStack'
 
 const team = [
   { name: 'Amara Osei', role: 'Executive Director', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300', bio: '12 years in nonprofit leadership across West Africa.' },
@@ -33,11 +34,90 @@ const partners = [
 export default function About() {
   return (
     <>
-      {/* Page Header */}
-      <section className="page-header">
-        <div className="container">
-          <h1>About Our Foundation</h1>
-          <p>Learn more about our mission, vision, team, and the milestones driving grassroots impact across Nigeria.</p>
+      {/* ========== HERO SECTION (About Page) ========== */}
+      <section className="hero">
+        {/* Warm light flare background element */}
+        <div className="hero-glow-blob"></div>
+
+        <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+          <div className="hero-grid">
+            
+            {/* Left Content Column */}
+            <div className="hero-content">
+              <div className="hero-award-tag">
+                <span>ABOUT OUR FOUNDATION</span>
+                <i className="fas fa-heart" style={{ color: 'var(--primary)', fontSize: '.75rem' }}></i>
+              </div>
+              <h1 className="hero-title">
+                Restoring Hope, <br />
+                <span className="text-gradient">Empowering Lives</span> <br />
+                Across Nigeria
+              </h1>
+              <p className="hero-description">
+                Learn more about our mission, vision, team, and the milestones driving grassroots impact across Nigeria.
+              </p>
+              <div className="hero-cta-buttons">
+                <Link to="/contact" className="hero-btn-white">
+                  Donate Now <i className="fas fa-arrow-right" style={{ marginLeft: '.5rem', fontSize: '.85rem' }}></i>
+                </Link>
+                <a href="#team" className="hero-btn-outline">
+                  Meet the Team <i className="fas fa-users" style={{ marginLeft: '.5rem', fontSize: '.85rem' }}></i>
+                </a>
+              </div>
+            </div>
+
+            {/* Right Column: Statistics / Metrics Panel */}
+            <div className="hero-cards-col">
+              <div className="hero-metric-panel">
+                <div className="metric-header-row">
+                  <div className="metric-icon-wrap">
+                    <i className="fas fa-history" style={{ fontSize: '1.25rem', color: '#fff' }}></i>
+                  </div>
+                  <div>
+                    <h3>6+ Years</h3>
+                    <p>of Continuous Field Operations</p>
+                  </div>
+                </div>
+
+                <div className="metric-progress-wrap">
+                  <div className="progress-label-row">
+                    <span>National Reach & Verification</span>
+                    <span>100%</span>
+                  </div>
+                  <div className="metric-progress-bg">
+                    <div className="metric-progress-fill" style={{ width: '100%' }}></div>
+                  </div>
+                </div>
+
+                <div className="metric-details-grid">
+                  <div className="metric-detail-item">
+                    <h4>15K+</h4>
+                    <span>STUDENTS</span>
+                  </div>
+                  <div className="metric-divider"></div>
+                  <div className="metric-detail-item">
+                    <h4>40+</h4>
+                    <span>WELLS</span>
+                  </div>
+                  <div className="metric-divider"></div>
+                  <div className="metric-detail-item">
+                    <h4>8K+</h4>
+                    <span>PATIENTS</span>
+                  </div>
+                </div>
+
+                <div className="metric-badges-row">
+                  <span className="metric-badge green">
+                    <span className="badge-dot"></span> 9 STATES
+                  </span>
+                  <span className="metric-badge gold">
+                    <i className="fas fa-crown" style={{ marginRight: '.3rem', fontSize: '.75rem' }}></i> CAC APPROVED
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -73,13 +153,13 @@ export default function About() {
             <span>Our Purpose</span>
             <h2>Mission & Vision</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem' }}>
-            <div className="cause-card" style={{ padding: '2.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '2.5rem' }}>
+            <div className="cause-card" style={{ padding: '2.5rem', minWidth: 0 }}>
               <i className="fas fa-bullseye" style={{ fontSize: '2.5rem', color: 'var(--primary)', marginBottom: '1.2rem', display: 'block' }}></i>
               <h3 style={{ marginBottom: '1rem' }}>Our Mission</h3>
               <p style={{ color: 'var(--text-muted)', lineHeight: 1.8 }}>To deliver targeted, community-centered, and verifiable developmental interventions in education, clean water, and healthcare — directly to Nigeria's most underserved populations.</p>
             </div>
-            <div className="cause-card" style={{ padding: '2.5rem' }}>
+            <div className="cause-card" style={{ padding: '2.5rem', minWidth: 0 }}>
               <i className="fas fa-eye" style={{ fontSize: '2.5rem', color: 'var(--secondary)', marginBottom: '1.2rem', display: 'block' }}></i>
               <h3 style={{ marginBottom: '1rem' }}>Our Vision</h3>
               <p style={{ color: 'var(--text-muted)', lineHeight: 1.8 }}>A Nigeria where geography does not determine destiny — where every child has access to quality education, every home has clean water, and every community has basic medical care.</p>
@@ -134,22 +214,15 @@ export default function About() {
       </section>
 
       {/* Meet the Team */}
-      <section className="section-padding" style={{ background: 'var(--bg-light)' }}>
+      <section id="team" className="section-padding" style={{ background: 'var(--bg-light)' }}>
         <div className="container">
           <div className="section-header">
             <span>Leadership</span>
             <h2>Meet the Team</h2>
             <p>The dedicated people who lead our operations, manage our volunteers, and drive our impact daily.</p>
           </div>
-          <div className="volunteers-grid">
-            {team.map((m, i) => (
-              <div key={i} className="volunteer-profile-card">
-                <div className="vol-img-wrap"><img src={m.image} alt={m.name} /></div>
-                <h4>{m.name}</h4>
-                <span style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '.8rem', textTransform: 'uppercase' }}>{m.role}</span>
-                <p style={{ color: 'var(--text-muted)', fontSize: '.85rem', marginTop: '.5rem', padding: '0 .5rem' }}>{m.bio}</p>
-              </div>
-            ))}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+            <TeamStack members={team} />
           </div>
         </div>
       </section>

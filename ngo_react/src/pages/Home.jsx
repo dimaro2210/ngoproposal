@@ -1,5 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TestimonialSlider from '../components/TestimonialSlider';
+import NewsCarousel from '../components/NewsCarousel';
+import TeamStack from '../components/TeamStack';
+import HopeSection from '../components/HopeSection';
+import CTAReveal from '../components/CTAReveal';
 
 export default function Home() {
   const causes = [
@@ -69,51 +74,70 @@ export default function Home() {
   const testimonials = [
     {
       id: 1,
-      quote: '"Charius NGO does an exceptional job delivering school learning packs directly to pupils in remote villages. Highly transparent team."',
+      quote: "Charius NGO does an exceptional job delivering school learning packs directly to pupils in remote villages. Highly transparent team.",
       name: 'Elizabeth Joe',
-      role: 'Founder of KD NGO',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=80'
+      affiliation: 'Founder of KD NGO',
+      imageSrc: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600',
+      thumbnailSrc: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150'
     },
     {
       id: 2,
-      quote: '"I supported their clean water solar borehole project last quarter. They kept me updated with pictures and video completions. Professional!"',
+      quote: "I supported their clean water solar borehole project last quarter. They kept me updated with pictures and video completions. Professional!",
       name: 'Esther Howard',
-      role: 'Web Designer',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=80'
+      affiliation: 'Web Designer',
+      imageSrc: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600',
+      thumbnailSrc: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150'
     },
     {
       id: 3,
-      quote: '"Delivering vaccines and tests directly to the doorsteps of communities that lack general hospitals. This is lifesaving work."',
+      quote: "Delivering vaccines and tests directly to the doorsteps of communities that lack general hospitals. This is lifesaving work.",
       name: 'Albert Flores',
-      role: 'President of Sales',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=80'
+      affiliation: 'President of Sales',
+      imageSrc: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600',
+      thumbnailSrc: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150'
     }
   ];
 
   const news = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=600',
+      image: 'https://images.unsplash.com/photo-1541944743827-e04aa6427c33?q=80&w=600',
       category: 'Water',
-      title: 'Your donation means a lot to them. Donate what you can.',
-      desc: 'Establishing three solar boreholes to deliver clean drinking water directly to remote gates...',
+      title: 'Solar Boreholes Deployed In Remote Kogi Communities',
+      desc: 'Three solar-powered boreholes were installed to guarantee safe, clean drinking water directly to over 8,000 residents.',
       date: 'Jan 24, 2026'
     },
     {
       id: 2,
       image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600',
       category: 'Education',
-      title: 'Help make their dreams reality. Proper school projects.',
-      desc: 'Constructing modern classrooms and distributing textbook learning packs to primary school pupils...',
+      title: '15,000 Textbooks & Math Kits Distributed To Rural Primary Pupils',
+      desc: 'Our education outreach team successfully completed deliveries to primary schools across Kogi and Nasarawa states.',
       date: 'Feb 12, 2026'
     },
     {
       id: 3,
       image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=600',
       category: 'Health',
-      title: 'This can build a proper medical clinic for rural gates.',
-      desc: 'Bringing standard vaccines, vaccines clinics, and basic medical checkups directly to families...',
+      title: 'Mobile Vaccine Clinic Dispatched Across Gombe Villages',
+      desc: 'Trained nurses and pharmacists successfully delivered vaccines, malaria tests, and health kits to remote households.',
       date: 'Mar 18, 2026'
+    },
+    {
+      id: 4,
+      image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=600',
+      category: 'Women',
+      title: 'Vocational Grants & Sew Toolkits Gifted To Osun Mothers',
+      desc: '150 rural women graduated from our tailoring and digital literacy workshop, receiving launch micro-grants.',
+      date: 'Apr 05, 2026'
+    },
+    {
+      id: 5,
+      image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=600',
+      category: 'Food',
+      title: 'Emergency Nutrition Aid & School Meals Dispatched In Borno',
+      desc: 'Partnering with local farms, we successfully delivered 3,000 packs of emergency food support to displaced households.',
+      date: 'May 20, 2026'
     }
   ];
 
@@ -121,64 +145,106 @@ export default function Home() {
     <>
       {/* ========== HERO SECTION ========== */}
       <section className="hero">
-        <div className="container">
+        {/* Warm light flare background element */}
+        <div className="hero-glow-blob"></div>
+
+        <div className="container" style={{ position: 'relative', zIndex: 10 }}>
           <div className="hero-grid">
+            
+            {/* Left Content Column */}
             <div className="hero-content">
-              <span className="subtitle">Give them a chance.</span>
-              <h1>Give The Child <br />The Gift Of <br />Education.</h1>
-              <p>Collectively helping curious minds to lead our developmental projects and build sustainable paths out of poverty.</p>
-              <div className="hero-cta">
-                <Link to="/contact" className="btn-primary">Join Our Team</Link>
-                <div className="avatar-group">
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150" alt="Team 1" />
-                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150" alt="Team 2" />
-                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150" alt="Team 3" />
-                  <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150" alt="Team 4" />
-                </div>
+              <div className="hero-award-tag">
+                <span>AWARD-WINNING IMPACT</span>
+                <i className="fas fa-star" style={{ color: 'var(--primary)', fontSize: '.75rem' }}></i>
               </div>
-            </div>
-            <div className="hero-img-wrap">
-              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800" alt="Smiling Child" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========== ABOUT SECTION ========== */}
-      <section className="about-section section-padding">
-        <div className="container">
-          <div className="about-grid">
-            <div className="about-pill-gallery">
-              <div className="pill-img">
-                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=400" alt="Education helper" />
-              </div>
-              <div className="pill-img">
-                <img src="https://images.unsplash.com/photo-1541944743827-e04aa6427c33?q=80&w=400" alt="Girl child smiling" />
-              </div>
-              <div className="pill-img">
-                <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=400" alt="Volunteers work" />
+              <h1 className="hero-title">
+                Creating <br />
+                <span className="text-gradient">Human Impact</span> <br />
+                That Matters
+              </h1>
+              <p className="hero-description">
+                We design and deliver targeted, community-centered developmental interventions in education, clean water, and healthcare — bringing modern resources directly to Nigeria's most underserved populations.
+              </p>
+              <div className="hero-cta-buttons">
+                <Link to="/contact" className="hero-btn-white">
+                  Donate Now <i className="fas fa-arrow-right" style={{ marginLeft: '.5rem', fontSize: '.85rem' }}></i>
+                </Link>
+                <Link to="/about" className="hero-btn-outline">
+                  <i className="fas fa-play" style={{ marginRight: '.6rem', fontSize: '.8rem' }}></i> Watch Video
+                </Link>
               </div>
             </div>
 
-            <div className="about-content">
-              <span className="section-tag">Welcome to Charius</span>
-              <h2>You're the Hope <br />of Others.</h2>
-              <p>Our foundation focuses on immediate community development projects. By constructing solar boreholes, deploying mobile vaccine clinics, and delivering educational toolkits, we bring hope to those who need it most.</p>
+            {/* Right Metric Cards Column */}
+            <div className="hero-cards-col">
               
-              <div className="about-contact-row">
-                <Link to="/about" className="btn-secondary">Discover More</Link>
-                <div className="about-call">
-                  <i className="fas fa-phone-alt"></i>
+              {/* Large Metric Panel */}
+              <div className="hero-metric-panel">
+                <div className="metric-header-row">
+                  <div className="metric-icon-wrap">
+                    <i className="fas fa-bullseye" style={{ fontSize: '1.25rem', color: '#fff' }}></i>
+                  </div>
                   <div>
-                    <span>Call Us</span>
-                    <h4>+(234) 703-443-7910</h4>
+                    <h3>40K+</h3>
+                    <p>Lives Touched & Empowered</p>
                   </div>
                 </div>
+
+                <div className="metric-progress-wrap">
+                  <div className="progress-label-row">
+                    <span>Project Transparency</span>
+                    <span>100%</span>
+                  </div>
+                  <div className="metric-progress-bg">
+                    <div className="metric-progress-fill" style={{ width: '100%' }}></div>
+                  </div>
+                </div>
+
+                <div className="metric-details-grid">
+                  <div className="metric-detail-item">
+                    <h4>9+</h4>
+                    <span>STATES</span>
+                  </div>
+                  <div className="metric-divider"></div>
+                  <div className="metric-detail-item">
+                    <h4>100%</h4>
+                    <span>VERIFIED</span>
+                  </div>
+                  <div className="metric-divider"></div>
+                  <div className="metric-detail-item">
+                    <h4>24/7</h4>
+                    <span>DISPATCH</span>
+                  </div>
+                </div>
+
+                <div className="metric-badges-row">
+                  <span className="metric-badge green">
+                    <span className="badge-dot"></span> ACTIVE
+                  </span>
+                  <span className="metric-badge gold">
+                    <i className="fas fa-crown" style={{ marginRight: '.3rem', fontSize: '.75rem' }}></i> VERIFIED
+                  </span>
+                </div>
               </div>
+
+              {/* Smaller Partners Panel */}
+              <div className="hero-partners-panel">
+                <p className="partners-label">Trusted by Leading Organizations</p>
+                <div className="partners-logos">
+                  <span><i className="fas fa-hand-holding-heart" style={{ marginRight: '.3rem' }}></i> KD NGO</span>
+                  <span><i className="fas fa-shield-alt" style={{ marginRight: '.3rem' }}></i> USAID Partner</span>
+                  <span><i className="fas fa-university" style={{ marginRight: '.3rem' }}></i> Rotary Club</span>
+                </div>
+              </div>
+
             </div>
+
           </div>
         </div>
       </section>
+
+      {/* ========== HOPE OF OTHERS SECTION ========== */}
+      <HopeSection />
 
       {/* ========== STATS SECTION ========== */}
       <section className="stats-section">
@@ -214,8 +280,8 @@ export default function Home() {
           </div>
 
           <div className="causes-grid">
-            {causes.map(cause => (
-              <div key={cause.id} className="cause-card">
+            {causes.map((cause, idx) => (
+              <div key={cause.id} className="cause-card" data-aos="fade-up" data-delay={String((idx + 1) * 150)}>
                 <div className="cause-img">
                   <img src={cause.image} alt={cause.title} />
                 </div>
@@ -248,8 +314,8 @@ export default function Home() {
           </div>
 
           <div className="events-grid">
-            {events.map(event => (
-              <div key={event.id} className="event-card">
+            {events.map((event, idx) => (
+              <div key={event.id} className="event-card" data-aos="fade-up" data-delay={String((idx + 1) * 150)}>
                 <div className="event-img-wrap">
                   <img src={event.image} alt={event.title} />
                   <div className="event-date-badge">
@@ -279,16 +345,8 @@ export default function Home() {
             <p>Our dedicated management team and volunteers who dedicate their time to direct field operations.</p>
           </div>
 
-          <div className="volunteers-grid">
-            {volunteers.map(vol => (
-              <div key={vol.id} className="volunteer-profile-card">
-                <div className="vol-img-wrap">
-                  <img src={vol.image} alt={vol.name} />
-                </div>
-                <h4>{vol.name}</h4>
-                <span>{vol.role}</span>
-              </div>
-            ))}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+            <TeamStack members={volunteers} />
           </div>
         </div>
       </section>
@@ -321,13 +379,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ========== CTA STRIP ========== */}
-      <section className="cta-strip">
-        <div className="container cta-strip-container">
-          <h2>Your donation means a lot to them. <br />Donate what you can.</h2>
-          <Link to="/contact" className="btn-primary">Donate What You Can <i className="fas fa-heart"></i></Link>
-        </div>
-      </section>
+      {/* ========== CTA REVEAL ========== */}
+      <CTAReveal />
 
       {/* ========== TESTIMONIALS ========== */}
       <section className="testimonials-section section-padding">
@@ -338,21 +391,7 @@ export default function Home() {
             <p>Hear from our active donors, partners, and community leaders who support our impact.</p>
           </div>
 
-          <div className="testimonials-grid">
-            {testimonials.map(item => (
-              <div key={item.id} className="testimonial-card">
-                <i className="fas fa-quote-right quote-icon"></i>
-                <p>{item.quote}</p>
-                <div className="testimonial-profile">
-                  <img src={item.image} alt={item.name} />
-                  <div>
-                    <h4>{item.name}</h4>
-                    <span>{item.role}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TestimonialSlider reviews={testimonials} />
         </div>
       </section>
 
@@ -365,21 +404,7 @@ export default function Home() {
             <p>Read detailed stories of our field outreaches, project completions, and volunteer summits.</p>
           </div>
 
-          <div className="news-grid">
-            {news.map(item => (
-              <div key={item.id} className="news-card">
-                <div className="news-img-wrap">
-                  <img src={item.image} alt={item.title} />
-                </div>
-                <div className="news-body">
-                  <span className="news-category">{item.category}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
-                  <span className="news-date"><i className="far fa-calendar-alt"></i> {item.date}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <NewsCarousel newsItems={news} />
         </div>
       </section>
     </>

@@ -176,8 +176,9 @@ function GalleryScene({
     }));
   }, [depthRange, spatialPositions, totalImages, visibleCount]);
 
+  const lastScrollY = useRef(window.scrollY);
+
   const handleWheel = useCallback((e) => {
-    e.preventDefault();
     setScrollVelocity(prev => prev + e.deltaY * 0.01 * speed);
     setAutoPlay(false);
     lastInteraction.current = Date.now();
@@ -196,16 +197,32 @@ function GalleryScene({
   }, [speed]);
 
   useEffect(() => {
+    const handleWindowScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+      lastScrollY.current = currentScrollY;
+
+      // Add page scroll delta to the 3D flyout velocity
+      setScrollVelocity(prev => prev + delta * 0.05 * speed);
+      setAutoPlay(false);
+      lastInteraction.current = Date.now();
+    };
+
     const canvas = document.querySelector('canvas');
     if (canvas) {
-      canvas.addEventListener('wheel', handleWheel, { passive: false });
-      document.addEventListener('keydown', handleKeyDown);
-      return () => {
-        canvas.removeEventListener('wheel', handleWheel);
-        document.removeEventListener('keydown', handleKeyDown);
-      };
+      canvas.addEventListener('wheel', handleWheel, { passive: true });
     }
-  }, [handleWheel, handleKeyDown]);
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('wheel', handleWheel);
+      }
+      document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('scroll', handleWindowScroll);
+    };
+  }, [handleWheel, handleKeyDown, speed]);
 
   useEffect(() => {
     const interval = setInterval(() => {
